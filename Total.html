@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ECharts_Bar</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.8.0/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+
+    <style>
+        
+        .chart {
+            width: 100%;
+            height: 800px;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div id="main" class="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+
+        //  电信 Telecom
+        $.ajax({
+            url: "http://192.168.0.17:5000/TotalApi",
+            method: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            success: function (data) {
+
+                console.log(data)
+
+                var total_data = [];
+                for (i = 0; i < data["result"].length; i++){
+                    total_data.push(data["result"][i]["total"]);
+                };
+
+                var time_data = [];
+                for (i = 0; i < data["result"].length; i++){
+                    time_data.push(data["result"][i]["time"]);
+                };
+
+       
+
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '山貓網站及時人流'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        triggerOn: "mousemove",
+                    },
+                    legend: {
+                        data: ['網站人流數']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: time_data
+                    },
+                    yAxis: {
+                        type: 'value',
+                        show: true,
+                        position: "left",
+                        offset: 0
+                    },
+                    series: [{
+                        name: '網站人流數',
+                        type: 'line',
+                        data: total_data
+                    },
+
+                    ]
+                };
+
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            },
+            error: function () {
+                alert("total error")
+            }
+        });
+
+    </script>
+
+    <script language="javascript">
+        setTimeout("self.location.reload();", 10000);
+    </script>
+</body>                     
+
+</html>
