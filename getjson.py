@@ -6,11 +6,11 @@ import requests
 import time
 import pandas as pd
 import os
-
 import mysql.connector
 from fake_useragent import UserAgent
 from sqlalchemy import create_engine
-from collections import Counter
+
+#from collections import Counter
 
 # mydb = mysql.connector.connect(
 #   host = os.environ['HOST_IP'],

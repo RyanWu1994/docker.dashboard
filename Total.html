@@ -36,7 +36,7 @@
 
         //  电信 Telecom
         $.ajax({
-            url: "http://192.168.0.17:5000/TotalApi",
+            url: "http://localhost:5000/Api",
             method: "GET",
             crossDomain: true,
             dataType: 'json',
@@ -56,8 +56,6 @@
                 for (i = 0; i < data["result"].length; i++){
                     time_data.push(data["result"][i]["time"]);
                 };
-
-       
 
                 var myChart = echarts.init(document.getElementById('main'));
 
