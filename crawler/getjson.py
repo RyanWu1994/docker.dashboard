@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import json
 import requests
 import time
@@ -41,7 +38,7 @@ mydb = mysql.connector.connect(
   connect_timeout = 1000,
 )
 mycursor = mydb.cursor()
-mycursor.execute("CREATE TABLE IF NOT EXISTS `dashboard` (`id` INT NOT NULL AUTO_INCREMENT,`time` DATETIME NULL,`total` INT NULL DEFAULT NULL,PRIMARY KEY (`id`));")
+mycursor.execute("CREATE TABLE IF NOT EXISTS `dashboard` (`id` INT NOT NULL AUTO_INCREMENT,`time` CHAR(50) NULL,`total` INT NULL DEFAULT NULL,PRIMARY KEY (`id`));")
 mycursor.close()
 mydb.commit()
 mydb.close()
@@ -78,5 +75,7 @@ ip = "localhost:3306"
 db_name = "solar"
 table_name = "dashboard"
 
-result_list = GetApi()
-List_to_mysql(user,passwd,ip,db_name,table_name,result_list)
+while True:
+    result_list = GetApi()
+    List_to_mysql(user,passwd,ip,db_name,table_name,result_list)
+    time.sleep(10)

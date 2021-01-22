@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>ECharts_Bar</title>
+    <!-- 引入 echarts.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.8.0/echarts.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+
+    <style>
+        
+        .chart {
+            width: 100%;
+            height: 800px;
+
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div id="main" class="chart"></div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+
+        //  电信 Telecom
+        $.ajax({
+            url: "http://localhost:5000/Api",
+            method: "GET",
+            crossDomain: true,
+            dataType: 'json',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            },
+            success: function (data) {
+
+                console.log(data)
+
+                var total_data = [];
+                for (i = 0; i < data["result"].length; i++){
+                    total_data.push(data["result"][i]["total"]);
+                };
+
+                var time_data = [];
+                for (i = 0; i < data["result"].length; i++){
+                    time_data.push(data["result"][i]["time"]);
+                };
+
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                var option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        position: function (pt) {
+                            return [pt[0], '10%'];
+                        }
+                    },
+                    title: {
+                        left: 'center',
+                        text: '山貓網站人流圖',
+                    },
+                    toolbox: {
+                        feature: {
+                            dataZoom: {
+                                yAxisIndex: 'none'
+                            },
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: time_data
+                    },
+                    yAxis: {
+                        type: 'value',
+                        boundaryGap: [0, '100%']
+                    },
+                    dataZoom: [{
+                        type: 'inside',
+                        start: 0,
+                        end: 10
+                    }, {
+                        start: 0,
+                        end: 10,
+                        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+                        handleSize: '80%',
+                        handleStyle: {
+                            color: '#fff',
+                            shadowBlur: 3,
+                            shadowColor: 'rgba(0, 0, 0, 0.6)',
+                            shadowOffsetX: 2,
+                            shadowOffsetY: 2
+                        }
+                    }],
+                    series: [
+                        {
+                            name: '人流量',
+                            type: 'line',
+                            smooth: true,
+                            symbol: 'none',
+                            sampling: 'average',
+                            itemStyle: {
+                                color: 'rgb(255, 70, 131)'
+                            },
+                            areaStyle: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                    offset: 0,
+                                    color: 'rgb(255, 158, 68)'
+                                }, {
+                                    offset: 1,
+                                    color: 'rgb(255, 70, 131)'
+                                }])
+                            },
+                            data: total_data
+                        }
+                    ]
+                };
+                
+                myChart.setOption(option);
+            },
+            error: function () {
+                alert("total error")
+            }
+        });
+
+    </script>
+
+    <!-- <script language="javascript">
+        setTimeout("self.location.reload();", 10000);
+    </script> -->
+</body>                     
+
+</html>
