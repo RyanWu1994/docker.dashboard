@@ -3,16 +3,74 @@ version: '3.2'
 services:
 
   mysql:
-    image: mysql:5.7
+    image: ryan_mysql:5.7.1
     container_name: mysql
     restart: always
     environment:
-       MYSQL_ROOT_PASSWORD: 1qaz@WSX
-       MYSQL_USER: ryan
-       MYSQL_PASSWORD: Aa123456
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
      - 3306:3306
     volumes: []
+    networks:
+      - dashboard
 
-#grant all privileges on *.* to 'ryan'@'%';
-#flush privileges;
+  crawler:
+    image: crawler:0.0.1
+    container_name: crawler
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_IP: ${MYSQL_IP}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_NAME: ${MYSQL_NAME}
+      MYSQL_TABLE: ${MYSQL_TABLE}
+    volumes: []
+    networks:
+      - dashboard
+
+  # api:
+  #   image:
+  #   container_name: api
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #     - mysql_init
+  #     - crawler
+  #   environment:
+  #      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #      MYSQL_USER: ${DB_USER}
+  #      MYSQL_PASSWORD: ${DB_PASSWORD}
+  #   volumes: []
+  #   networks:
+  #     - dashboard
+
+  # web:
+  #   image:
+  #   container_name: web
+  #   restart: always
+  #   depends_on:
+  #     - mysql
+  #     - mysql_init
+  #     - crawler
+  #     - api
+  #   environment:
+  #      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  #      MYSQL_USER: ${DB_USER}
+  #      MYSQL_PASSWORD: ${DB_PASSWORD}
+  #   volumes: []
+  #   networks:
+  #     - dashboard
+
+networks:
+  dashboard:
+    driver: bridge
+
+

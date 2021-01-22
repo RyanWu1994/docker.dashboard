@@ -9,34 +9,14 @@ from sqlalchemy import create_engine
 
 #from collections import Counter
 
-# mydb = mysql.connector.connect(
-#   host = os.environ['HOST_IP'],
-#   user = os.environ["MYSQL_USER"],
-#   password = os.environ['MYSQL_PASSWORD'],
-#   database = os.environ["MYSQL_DATABASE"],
-#   connect_timeout = 1000,
-# )
-
 mydb = mysql.connector.connect(
-  host = "localhost",
-  user = "ryan",
-  password = "Aa123456",
+  host = os.environ['MYSQL_IP'],
+  user = os.environ["MYSQL_USER"],
+  password = os.environ['MYSQL_PASSWORD'],
+  database = os.environ["MYSQL_NAME"],
   connect_timeout = 1000,
 )
-mycursor = mydb.cursor()
-mycursor.execute("CREATE DATABASE IF NOT EXISTS solar;")
-mycursor.close()
-mydb.commit()
-mydb.close()
 
-
-mydb = mysql.connector.connect(
-  host = "localhost",
-  user = "ryan",
-  password = "Aa123456",
-  database = "solar",
-  connect_timeout = 1000,
-)
 mycursor = mydb.cursor()
 mycursor.execute("CREATE TABLE IF NOT EXISTS `dashboard` (`id` INT NOT NULL AUTO_INCREMENT,`time` CHAR(50) NULL,`total` INT NULL DEFAULT NULL,PRIMARY KEY (`id`));")
 mycursor.close()
@@ -69,13 +49,13 @@ def List_to_mysql(user,passwd,ip,db_name,table_name,result_list):
     con.close() 
     engine.dispose()
 
-user = "ryan"
-passwd = "Aa123456"
-ip = "localhost:3306"
-db_name = "solar"
-table_name = "dashboard"
+user = os.environ['MYSQL_USER']
+passwd = os.environ['MYSQL_PASSWORD']
+ip = str(os.environ['MYSQL_IP'])+":"+str(os.environ['MYSQL_PORT'])
+db_name = os.environ['MYSQL_NAME']
+table_name = os.environ['MYSQL_TABLE']
 
 while True:
     result_list = GetApi()
     List_to_mysql(user,passwd,ip,db_name,table_name,result_list)
-    time.sleep(10)
+    time.sleep(15)
