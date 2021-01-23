@@ -4,11 +4,11 @@ from flask_cors import cross_origin,CORS
 import os
 
 # 設定DB連線
-DB_host = "localhost"
-DB_user = "ryan"
-DB_passwd = "Aa123456"
-DB_port = "3306"
-DB_name = "solar"
+DB_host = os.environ['MYSQL_HOST']
+DB_user = os.environ["MYSQL_USER"]
+DB_passwd = os.environ['MYSQL_PASSWORD']
+DB_port = os.environ['MYSQL_PORT']
+DB_name = os.environ["MYSQL_DB"]
 
 app = Flask(__name__)
 CORS(app, resources=r'/*', supports_credentials=True)
@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://" + DB_user + ":"+ DB_passwd +"@"+ DB_host +":"+ DB_port +"/"+ DB_name
 db = SQLAlchemy(app)
 
-@app.route('/Api', methods=['GET'])
+@app.route('/api', methods=['GET'])
 def TotalApi():
 
     sql_cmd = """
@@ -33,6 +33,5 @@ def TotalApi():
 
     return response
 
-
 if __name__ == "__main__":
-    app.run( host='127.0.0.1',port=5000, debug=True)
+    app.run( host='0.0.0.0',port=5000, debug=True)

@@ -10,10 +10,10 @@ from sqlalchemy import create_engine
 #from collections import Counter
 
 mydb = mysql.connector.connect(
-  host = os.environ['MYSQL_IP'],
+  host = os.environ['MYSQL_HOST'],
   user = os.environ["MYSQL_USER"],
   password = os.environ['MYSQL_PASSWORD'],
-  database = os.environ["MYSQL_NAME"],
+  database = os.environ["MYSQL_DB"],
   connect_timeout = 1000,
 )
 
@@ -51,8 +51,8 @@ def List_to_mysql(user,passwd,ip,db_name,table_name,result_list):
 
 user = os.environ['MYSQL_USER']
 passwd = os.environ['MYSQL_PASSWORD']
-ip = str(os.environ['MYSQL_IP'])+":"+str(os.environ['MYSQL_PORT'])
-db_name = os.environ['MYSQL_NAME']
+ip = str(os.environ['MYSQL_HOST'])+":"+str(os.environ['MYSQL_PORT'])
+db_name = os.environ['MYSQL_DB']
 table_name = os.environ['MYSQL_TABLE']
 
 while True:

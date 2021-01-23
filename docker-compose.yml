@@ -11,46 +11,51 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-     - 3306:3306
+      - 3306:3306
     volumes: []
     networks:
       - dashboard
 
   crawler:
-    image: crawler:0.0.1
+    image: crawler:0.0.2
     container_name: crawler
     restart: always
     depends_on:
       - mysql
+    links:
+      - mysql:${MYSQL_HOST}
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_IP: ${MYSQL_IP}
+      MYSQL_HOST: ${MYSQL_HOST}
       MYSQL_PORT: ${MYSQL_PORT}
-      MYSQL_NAME: ${MYSQL_NAME}
+      MYSQL_DB: ${MYSQL_DB}
       MYSQL_TABLE: ${MYSQL_TABLE}
     volumes: []
     networks:
       - dashboard
 
-  # api:
-  #   image:
-  #   container_name: api
-  #   restart: always
-  #   depends_on:
-  #     - mysql
-  #     - mysql_init
-  #     - crawler
-  #   environment:
-  #      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-  #      MYSQL_USER: ${DB_USER}
-  #      MYSQL_PASSWORD: ${DB_PASSWORD}
-  #   volumes: []
-  #   networks:
-  #     - dashboard
+  api:
+    image: api:0.0.1
+    container_name: api
+    restart: always
+    depends_on:
+      - mysql
+      - crawler
+    links:
+      - mysql:${MYSQL_HOST}
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_TABLE: ${MYSQL_TABLE}
+    volumes: []
+    ports:
+      - 5000:5000
+    networks:
+      - dashboard
 
   # web:
   #   image:
