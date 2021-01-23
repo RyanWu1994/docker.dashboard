@@ -3,7 +3,7 @@ version: '3.2'
 services:
 
   mysql:
-    image: ryan_mysql:5.7.1
+    image: ryanwu1994/solar_sql:latest
     container_name: mysql
     restart: always
     environment:
@@ -17,7 +17,7 @@ services:
       - dashboard
 
   crawler:
-    image: crawler:0.0.2
+    image: ryanwu1994/solar_crawler:latest
     container_name: crawler
     restart: always
     depends_on:
@@ -36,7 +36,7 @@ services:
       - dashboard
 
   api:
-    image: api:0.0.1
+    image: ryanwu1994/solar_api:latest
     container_name: api
     restart: always
     depends_on:
@@ -63,13 +63,15 @@ services:
   #   restart: always
   #   depends_on:
   #     - mysql
-  #     - mysql_init
   #     - crawler
   #     - api
   #   environment:
-  #      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-  #      MYSQL_USER: ${DB_USER}
-  #      MYSQL_PASSWORD: ${DB_PASSWORD}
+  #     MYSQL_USER: ${MYSQL_USER}
+  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+  #     MYSQL_HOST: ${MYSQL_HOST}
+  #     MYSQL_PORT: ${MYSQL_PORT}
+  #     MYSQL_DB: ${MYSQL_DB}
+  #     MYSQL_TABLE: ${MYSQL_TABLE}
   #   volumes: []
   #   networks:
   #     - dashboard
