@@ -12,7 +12,8 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - 3306:3306
-    volumes: []
+    volumes:
+      - /etc/localtime:/etc/localtime
     networks:
       - dashboard
 
@@ -31,7 +32,8 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DB: ${MYSQL_DB}
       MYSQL_TABLE: ${MYSQL_TABLE}
-    volumes: []
+    volumes:
+      - /etc/localtime:/etc/localtime
     networks:
       - dashboard
 
@@ -51,33 +53,37 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DB: ${MYSQL_DB}
       MYSQL_TABLE: ${MYSQL_TABLE}
-    volumes: []
+    volumes: 
+      - /etc/localtime:/etc/localtime
     ports:
       - 5000:5000
     networks:
       - dashboard
 
-  # web:
-  #   image:
-  #   container_name: web
-  #   restart: always
-  #   depends_on:
-  #     - mysql
-  #     - crawler
-  #     - api
-  #   environment:
-  #     MYSQL_USER: ${MYSQL_USER}
-  #     MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-  #     MYSQL_HOST: ${MYSQL_HOST}
-  #     MYSQL_PORT: ${MYSQL_PORT}
-  #     MYSQL_DB: ${MYSQL_DB}
-  #     MYSQL_TABLE: ${MYSQL_TABLE}
-  #   volumes: []
-  #   networks:
-  #     - dashboard
+  web:
+    image: nginx:1.19.6
+    container_name: web
+    restart: always
+    depends_on:
+      - mysql
+      - crawler
+      - api
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_DB: ${MYSQL_DB}
+      MYSQL_TABLE: ${MYSQL_TABLE}
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - ./web/html:/usr/share/nginx/html
+      - ./web/js://usr/share/nginx/js
+    ports:
+      - 8080:80
+    networks:
+      - dashboard
 
 networks:
   dashboard:
     driver: bridge
-
-
