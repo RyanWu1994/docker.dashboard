@@ -13,7 +13,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - /etc/localtime:/etc/localtime
+       - /etc/localtime:/etc/localtime
     networks:
       - dashboard
 
@@ -32,8 +32,8 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_DB: ${MYSQL_DB}
       MYSQL_TABLE: ${MYSQL_TABLE}
-    volumes:
-      - /etc/localtime:/etc/localtime
+    volumes: 
+       - /etc/localtime:/etc/localtime
     networks:
       - dashboard
 
@@ -54,7 +54,7 @@ services:
       MYSQL_DB: ${MYSQL_DB}
       MYSQL_TABLE: ${MYSQL_TABLE}
     volumes: 
-      - /etc/localtime:/etc/localtime
+       - /etc/localtime:/etc/localtime
     ports:
       - 5000:5000
     networks:
